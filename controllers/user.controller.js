@@ -14,8 +14,6 @@ class UserController{
         
     }
 
-    //DSADFDASFbDFVSDD
-    //dsagfdgfd
     // FUNCTION TO LOGIN USERS AND GIVE THEM TOKEN
     async userLogin(req, res){
         const {email, password} = req.body

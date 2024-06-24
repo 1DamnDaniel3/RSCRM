@@ -19,7 +19,7 @@ class UserController{
     //хуй ебал
     //хуй ебал
     //хуй ебал
-    //хуй ебал
+    //хуй ебал2
     // FUNCTION TO LOGIN USERS AND GIVE THEM TOKEN
     async userLogin(req, res){
         const {email, password} = req.body

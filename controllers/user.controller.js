@@ -1,17 +1,12 @@
 const UserTokensController = require('./user.tokens.controller')
+const BaseController = require('./base.Controller')
 const { Users } = require('../db')
 const bcrypt = require('bcryptjs')
 
-class UserController{
-     // FUNCTION TO REGISTER NEW USER
-     async userRegister(req, res){
-        try{
-            const user_data = await Users.create(req.body)
-            res.status(201).json({message: "registration succseful"})
-        } catch(error){
-            res.status(400).json({massage: error.massege})
-        }
-        
+
+class UserController extends BaseController { // inherit from the base controller to make effective routes
+    constructor() {
+        super(Users, 'user_id')
     }
 
     // FUNCTION TO LOGIN USERS AND GIVE THEM TOKEN
@@ -41,10 +36,10 @@ class UserController{
 
     // FUNCTION TO CHANGE USERS PASSWORD
     async userChangePassword(req, res) {
-        const { userID, newPassword } = req.body;
+        const { email, newPassword } = req.body;
         try {
             // find user by ID
-            const user = await Users.findOne({ where: { user_id: userID } });
+            const user = await Users.findOne({ where: { email: email } });
             if (!user) {
                 return res.status(401).json({ message: 'User not found' });
             }

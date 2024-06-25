@@ -9,12 +9,14 @@ const Students = sequelize.define('Students', {
         },
         lead_id: {
             type: DataTypes.INTEGER,   //Начинаю описывать вторичные ключи для создания связей для ORM Sequelize
+            allowNull: false,
             references: {
                 model: 'leads', //имя таблицы
                 key: 'lead_id'}
             },
         abon_id:{
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: 'abonements',
                 key: 'abon_id'
@@ -28,22 +30,27 @@ const Students = sequelize.define('Students', {
             }
         },
         second_name: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         first_name: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         patronymic: {
             type: DataTypes.STRING
         },
         phone: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         birthdate: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         hiredate: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false,
         }
         
     }, {

@@ -6,7 +6,7 @@ const UserTokensController = require('../controllers/user.tokens.controller');
 const UserTokentsController = new UserTokensController
 
 //CRUD
-router.post('/users/register', (req, res) => userController.userRegister(req, res));
+router.post('/users/register', (req, res) => userController.create(req, res));
 router.get('/users', (req, res) => userController.getAll(req, res));
 router.get('/users/:id', (req, res) => userController.getOne(req, res));
 router.put('/users/:id', (req, res) => userController.update(req, res));

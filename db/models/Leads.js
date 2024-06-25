@@ -9,17 +9,21 @@ const Leads = sequelize.define('Leads', {
         primaryKey: true,
         autoIncrement: true
     },
-    firt_name:{
-        type: DataTypes.STRING
+    first_name:{
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     second_name:{
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     phone:{
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     qualification: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        allowNull: false,
     },
     trial_date:{
         type: DataTypes.STRING

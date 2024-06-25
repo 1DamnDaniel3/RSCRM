@@ -9,6 +9,16 @@ class UserController extends BaseController { // inherit from the base controlle
         super(Users, 'user_id')
     }
 
+    //хуй ебал
+    //хуй ебал
+    //хуй ебал
+    //хуй ебал
+    //хуй ебал
+    //хуй ебал
+    //хуй ебал2
+
+
+
     // FUNCTION TO LOGIN USERS AND GIVE THEM TOKEN
     async userLogin(req, res){
         const {email, password} = req.body

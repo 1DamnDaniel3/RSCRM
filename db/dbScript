@@ -1,0 +1,126 @@
+CREATE TABLE leads (
+	lead_id SERIAL PRIMARY KEY,
+	first_name VARCHAR,
+	second_name VARCHAR,
+	phone VARCHAR,
+	qualification TEXT,
+	trial_date VARCHAR
+);
+
+CREATE TABLE abonements (
+	abon_id SERIAL PRIMARY KEY,
+	abon_type VARCHAR,
+	abon_cost VARCHAR,
+	sessions INT
+);
+
+CREATE TABLE groups (
+	group_id SERIAL PRIMARY KEY,
+	group_type VARCHAR
+);
+
+CREATE TABLE weekday(
+	weekday_id SERIAL PRIMARY KEY,
+	weekday_name VARCHAR
+);
+
+CREATE TABLE weekday_groups (
+	wkd_id SERIAL PRIMARY KEY,
+	weekday_id INT,
+	group_id INT,
+	foreign key(weekday_id) references weekday(weekday_id),
+	foreign key(group_id) references groups(group_id)
+);
+
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    user_type VARCHAR,
+    second_name VARCHAR,
+    first_name VARCHAR,
+    patronymic VARCHAR,
+    pasport_data VARCHAR NOT NULL UNIQUE,
+    phone VARCHAR NOT NULL,
+    salary VARCHAR,
+    hiredate VARCHAR,
+    email VARCHAR NOT NULL UNIQUE,
+    password VARCHAR NOT NULL
+);
+
+
+CREATE TABLE user_tokens (
+    token_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    token VARCHAR NOT NULL,
+    refresh_token VARCHAR NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE students (
+	stud_id SERIAL PRIMARY KEY,
+	lead_id INT,
+	abon_id INT,
+	group_id INT,
+	second_name VARCHAR,
+	first_name VARCHAR,
+	patronymic VARCHAR,
+	phone VARCHAR,
+	birthdate VARCHAR,
+	hiredate VARCHAR,
+	foreign key(lead_id) references leads(lead_id),
+	foreign key(abon_id) references abonements(abon_id),
+	foreign key(group_id) references groups(group_id)
+);
+
+CREATE TABLE students_abonements (
+    stud_abon_id SERIAL PRIMARY KEY,
+    stud_id INT NOT NULL,
+    abon_id INT NOT NULL,
+    status VARCHAR DEFAULT 'active',
+    start_date DATE,
+    end_date DATE,
+    FOREIGN KEY (stud_id) REFERENCES students(stud_id),
+    FOREIGN KEY (abon_id) REFERENCES abonements(abon_id)
+);
+
+CREATE TABLE payment (
+	payment_id SERIAL PRIMARY KEY,
+	abon_id INT,
+	lead_id INT,
+	payment_date VARCHAR,
+	foreign key(abon_id) references abonements(abon_id),
+	foreign key(lead_id) references leads(lead_id)
+);
+
+CREATE TABLE event (
+	event_id SERIAL PRIMARY KEY,
+	event_type VARCHAR
+);
+
+CREATE TABLE authorisation (
+	authorisation_id SERIAL PRIMARY KEY,
+	user_id INT,
+	event_id INT,
+	date_time DATE,
+	foreign key(user_id) references users(user_id),
+	foreign key(event_id) references event(event_id)
+);
+
+CREATE TABLE classes(
+	class_id SERIAL PRIMARY KEY,
+	stud_id INT,
+	user_id INT,
+	class_date VARCHAR,
+	class_time VARCHAR,
+	foreign key(stud_id) references students(stud_id),
+	foreign key(user_id) references users(user_id)
+);
+
+CREATE TABLE attendance (
+	attendance_id SERIAL PRIMARY KEY,
+	stud_id INT,
+	attendance_date VARCHAR,
+	foreign key(stud_id) references students(stud_id)
+);

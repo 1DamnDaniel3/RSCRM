@@ -21,8 +21,8 @@ const Authorisation = sequelize.define('Authorisation', {
                 key: 'event_id'
             }
         },
-        data_time: {
-            type: DataTypes.STRING
+        date_time: {
+            type: DataTypes.DATE
         }
     }, {
         tableName: 'authorisation',

@@ -14,6 +14,7 @@ const Users = require('./models/Users')
 const Weekday_groups = require('./models/Weekday_groups')
 const Weekday = require('./models/Weekday')
 const UserToken = require('./models/User_token')
+const StudentsAbonements = require('./models/Students_abonements')
 
 
 //Make links between models
@@ -25,6 +26,9 @@ Payment.belongsTo(Leads, {foreignKey: 'lead_id'})
 
 Abonements.hasMany(Students, {foreignKey: 'abon_id', onDelete: 'CASCADE' }) // ABONEMENTS
 Students.belongsTo(Abonements, {foreignKey: 'abon_id'})
+
+Abonements.hasMany(StudentsAbonements, {foreignKey: 'abon_id', onDelete: 'CASCADE' })
+StudentsAbonements.belongsTo(Abonements, {foreignKey: 'abon_id'})
 
 Abonements.hasMany(Payment, {foreignKey: 'abon_id', onDelete: 'CASCADE' })
 Payment.belongsTo(Abonements, {foreignKey: 'abon_id'})
@@ -53,6 +57,9 @@ Classes.belongsTo(Users, {foreignKey: 'user_id'})
 Students.hasMany(Classes, {foreignKey: 'stud_id', onDelete: 'CASCADE' }) //STUDENTS
 Classes.belongsTo(Students, {foreignKey: 'stud_id'})
 
+Students.hasMany(StudentsAbonements, {foreignKey: 'stud_id', onDelete: 'CASCADE' })
+StudentsAbonements.belongsTo(Students, {foreignKey: 'stud_id'})
+
 Students.hasMany(Attendance, {foreignKey: 'stud_id', onDelete: 'CASCADE' })
 Attendance.belongsTo(Students, {foreignKey: 'stud_id'})
 
@@ -70,8 +77,10 @@ module.exports = { // export models with their links
     Leads,
     Payment,
     Students,
+    StudentsAbonements,
     Users,
     UserToken,
     Weekday_groups,
     Weekday
+    
 };

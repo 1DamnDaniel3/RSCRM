@@ -8,7 +8,8 @@ const Groups = sequelize.define('Groups', {
             autoIncrement: true
         },
         group_type: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         }
     },{
         tableName: 'groups',

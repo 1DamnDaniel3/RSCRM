@@ -14,14 +14,6 @@ const Students = sequelize.define('Students', {
                 model: 'leads', //имя таблицы
                 key: 'lead_id'}
             },
-        abon_id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'abonements',
-                key: 'abon_id'
-            }
-        },
         group_id:{
             type: DataTypes.INTEGER,
             references: {

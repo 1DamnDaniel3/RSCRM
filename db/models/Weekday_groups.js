@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../connection');
 
 const Weekday_groups = sequelize.define('Weekday_groups', {
-    wkd_id: {
+    wkdg_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true

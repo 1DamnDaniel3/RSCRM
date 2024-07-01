@@ -24,10 +24,7 @@ Students.belongsTo(Leads, {foreignKey: 'lead_id'})
 Leads.hasMany(Payment, {foreignKey: 'lead_id', onDelete: 'CASCADE' })
 Payment.belongsTo(Leads, {foreignKey: 'lead_id'})
 
-Abonements.hasMany(Students, {foreignKey: 'abon_id', onDelete: 'CASCADE' }) // ABONEMENTS
-Students.belongsTo(Abonements, {foreignKey: 'abon_id'})
-
-Abonements.hasMany(StudentsAbonements, {foreignKey: 'abon_id', onDelete: 'CASCADE' })
+Abonements.hasMany(StudentsAbonements, {foreignKey: 'abon_id', onDelete: 'CASCADE' })// ABONEMENTS
 StudentsAbonements.belongsTo(Abonements, {foreignKey: 'abon_id'})
 
 Abonements.hasMany(Payment, {foreignKey: 'abon_id', onDelete: 'CASCADE' })

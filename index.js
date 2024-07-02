@@ -5,6 +5,7 @@ const studentRouter = require('./routes/student.routes')
 const abonementsRouter = require('./routes/abonement.router')
 const groupRouter = require('./routes/group.router')
 const WKDgroupsRouter = require('./routes/wkd_groups.router')
+const studentsAbonements = require('./routes/stud.abon.router')
 
 
 const PORT = process.env.PORT || 3001
@@ -18,6 +19,7 @@ app.use('/api', studentRouter)
 app.use('/api', abonementsRouter)
 app.use('/api', groupRouter)
 app.use('/api', WKDgroupsRouter)
+app.use('/api', studentsAbonements)
 
 
 

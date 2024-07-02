@@ -6,7 +6,7 @@ const studentsController = require('../controllers/students.controller')
 router.post('/students/registration', (req, res) => studentsController.create(req, res));
 router.get('/students', (req, res) => studentsController.getAll(req, res));
 router.get('/students/:id', (req, res) => studentsController.getOne(req, res));
-router.put('/students/:id', (req, res) => studentsController.update(req, res));
+router.put('/students/:id', (req, res) => studentsController.updateData(req, res));
 router.delete('/students/:id', (req, res) => studentsController.delete(req, res));
 
 //Another routes

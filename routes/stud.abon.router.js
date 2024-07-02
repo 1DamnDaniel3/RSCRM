@@ -6,10 +6,10 @@ const studAbonController = require('../controllers/stud.abon.controller')
 router.post('/studentsAbonements/createStudAbon', (req, res) => studAbonController.create(req, res));
 router.get('/studentsAbonements', (req, res) => studAbonController.getAll(req, res));
 router.get('/studentsAbonements/:id', (req, res) => studAbonController.getOne(req, res));
-router.put('/studentsAbonements/:id', (req, res) => studAbonController.update(req, res));
+router.put('/studentsAbonements/:id', (req, res) => studAbonController.updateData(req, res));
 router.delete('/studentsAbonements/:id', (req, res) => studAbonController.delete(req, res));
 
 // Another routes
-
+router.post('/studentsAbonements/calcEndDate', (req, res) => studAbonController.calculateEndDate(req, res));
 
 module.exports = router;

@@ -43,8 +43,8 @@ class BaseController{
                 where: {[this.modelIdName]: req.params.id}, 
                 returning: true,
             })
-            if(updatedItem[0]){
-                return res.status(404).json({message: ' Item not found'})
+            if (updatedItem[0] === 0 || !updatedItem[1][0]) {
+                return res.status(404).json({ message: 'Элемент не найден' });
             }
             res.json(updatedItem[1][0])
         }catch(error){

@@ -61,7 +61,6 @@ CREATE TABLE user_tokens (
 CREATE TABLE students (
 	stud_id SERIAL PRIMARY KEY,
 	lead_id INT,
-	abon_id INT,
 	group_id INT,
 	second_name VARCHAR,
 	first_name VARCHAR,

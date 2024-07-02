@@ -11,5 +11,6 @@ router.delete('/studentsAbonements/:id', (req, res) => studAbonController.delete
 
 // Another routes
 router.post('/studentsAbonements/calcEndDate', (req, res) => studAbonController.calculateEndDate(req, res));
+router.post('/studentsAbonements/resumeAbon', (req, res) => studAbonController.resumeAbon(req, res));
 
 module.exports = router;

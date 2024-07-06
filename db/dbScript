@@ -84,6 +84,14 @@ CREATE TABLE students_abonements (
     FOREIGN KEY (abon_id) REFERENCES abonements(abon_id)
 );
 
+CREATE TABLE fix_abonements (
+    fix_id SERIAL PRIMARY KEY,
+    stud_abon_id INTEGER NOT NULL,
+    start_fix_date DATE NOT NULL,
+    end_fix_date DATE,
+    FOREIGN KEY (stud_abon_id) REFERENCES students_abonements(stud_abon_id)
+);
+
 CREATE TABLE payment (
 	payment_id SERIAL PRIMARY KEY,
 	abon_id INT,

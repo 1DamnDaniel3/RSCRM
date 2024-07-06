@@ -15,6 +15,7 @@ const Weekday_groups = require('./models/Weekday_groups')
 const Weekday = require('./models/Weekday')
 const UserToken = require('./models/User_token')
 const StudentsAbonements = require('./models/Students_abonements')
+const FixAbonements = require('./models/Fix_abonements')
 
 
 //Make links between models
@@ -60,6 +61,9 @@ StudentsAbonements.belongsTo(Students, {foreignKey: 'stud_id'})
 Students.hasMany(Attendance, {foreignKey: 'stud_id', onDelete: 'CASCADE' })
 Attendance.belongsTo(Students, {foreignKey: 'stud_id'})
 
+StudentsAbonements.hasMany(FixAbonements, {foreignKey: 'stud_abon_id', onDelete: 'CASCADE' }) // STUDENTS_ABONEMENTS
+FixAbonements.belongsTo(StudentsAbonements, {foreignKey: 'stud_abon_id'})
+
 Event.hasMany(Authorisation, {foreignKey: 'event_id', onDelete: 'CASCADE' }) // EVENTS
 Authorisation.belongsTo(Event, {foreignKey: 'event_id'})
 
@@ -78,6 +82,6 @@ module.exports = { // export models with their links
     Users,
     UserToken,
     Weekday_groups,
-    Weekday
-    
+    Weekday,
+    FixAbonements,
 };

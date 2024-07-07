@@ -1,4 +1,5 @@
 const express = require('express')
+
 const userRouter = require('./routes/user.routes')
 const leadRouter = require('./routes/lead.routes')
 const studentRouter = require('./routes/student.routes')
@@ -11,6 +12,14 @@ const studentsAbonementsRouter = require('./routes/stud.abon.router')
 const PORT = process.env.PORT || 3001
 
 const app = express()
+
+app.use(cors({
+    origin: 'http://localhost:2999', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true // Если вам нужно передавать куки или авторизационные данные
+  }));
+
 app.use(express.json()); 
 
 app.use('/api', userRouter)

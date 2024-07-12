@@ -2,23 +2,14 @@ const jwt = require('jsonwebtoken');
 const BaseController = require('./base.Controller');
 const { UserToken } = require('../db');
 
+const UserTokensService = require('../services/user.tokens.service')
+
 class UserTokensController extends BaseController {
     constructor() {
         super(UserToken, 'token_id');
     }
 
-    // Вспомогательный метод для создания токена без req и res
-    async createToken(data) {
-        try {
-            const item = await this.model.create(data);
-            return item;
-        } catch (error) {
-            console.error('Error creating token:', error.message);
-            throw new Error('Error creating token');
-        }
-    }
-
-    async generateTokens(userId) {
+    async generateTokens(res ,userId) {
         try {
             // Удалить старые токены
             await UserToken.destroy({ where: { user_id: userId } });
@@ -29,12 +20,15 @@ class UserTokensController extends BaseController {
 
             // Записать их в базу данных
             const expiresAt = new Date(Date.now() + 3600 * 1000); // 1 час
-            await this.createToken({
+            await UserTokensService.createToken({
                 user_id: userId,
                 token,
                 refresh_token: refreshToken,
                 expires_at: expiresAt,
             });
+
+            // Установить токены в куки
+            UserTokensService.writeToCoockies(res, token, refreshToken)
 
             return { token, refreshToken };
         } catch (error) {
@@ -68,6 +62,10 @@ class UserTokensController extends BaseController {
             }, {
                 where: { token_id: userToken.token_id },
             });
+
+
+            // new tokens to coockies
+            UserTokensService.writeToCoockies(res, newToken, newRefreshToken)
 
             return res.status(200).json({ token: newToken, refreshToken: newRefreshToken });
         } catch (error) {

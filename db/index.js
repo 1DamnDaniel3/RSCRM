@@ -16,11 +16,15 @@ const Weekday = require('./models/Weekday')
 const UserToken = require('./models/User_token')
 const StudentsAbonements = require('./models/Students_abonements')
 const FixAbonements = require('./models/Fix_abonements')
+const Clients = require("./models/Client")
 
 
 //Make links between models
 Leads.hasMany(Students, {foreignKey: 'lead_id', onDelete: 'CASCADE' }) // LEADS
 Students.belongsTo(Leads, {foreignKey: 'lead_id'})
+
+Leads.hasOne(Clients, { foreignKey: 'lead_id', onDelete: 'CASCADE' });
+Clients.belongsTo(Leads, { foreignKey: 'lead_id' });
 
 Leads.hasMany(Payment, {foreignKey: 'lead_id', onDelete: 'CASCADE' })
 Payment.belongsTo(Leads, {foreignKey: 'lead_id'})
@@ -76,6 +80,7 @@ module.exports = { // export models with their links
     Event,
     Groups,
     Leads,
+    Clients,
     Payment,
     Students,
     StudentsAbonements,

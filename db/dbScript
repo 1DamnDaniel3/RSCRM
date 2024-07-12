@@ -1,35 +1,51 @@
 CREATE TABLE leads (
-	lead_id SERIAL PRIMARY KEY,
-	first_name VARCHAR,
-	second_name VARCHAR,
-	phone VARCHAR,
-	qualification TEXT,
-	trial_date VARCHAR
+    lead_id SERIAL PRIMARY KEY,
+    first_name VARCHAR,
+    second_name VARCHAR,
+    phone VARCHAR,
+    qualification TEXT,
+    trial_date VARCHAR
+);
+
+CREATE TABLE clients (
+    client_id SERIAL PRIMARY KEY,
+    lead_id INT UNIQUE NOT NULL,
+    first_name VARCHAR NOT NULL,
+    last_name VARCHAR,
+    patronymic VARCHAR,
+    join_date DATE NOT NULL,
+    birthdate DATE,
+    email VARCHAR UNIQUE,
+    address TEXT,
+    emergency_contact_name VARCHAR,
+    emergency_contact_phone VARCHAR,
+    contacts TEXT,
+    FOREIGN KEY (lead_id) REFERENCES leads(lead_id) ON DELETE CASCADE
 );
 
 CREATE TABLE abonements (
-	abon_id SERIAL PRIMARY KEY,
-	abon_type VARCHAR,
-	abon_cost VARCHAR,
-	sessions INT
+    abon_id SERIAL PRIMARY KEY,
+    abon_type VARCHAR,
+    abon_cost VARCHAR,
+    sessions INT
 );
 
 CREATE TABLE groups (
-	group_id SERIAL PRIMARY KEY,
-	group_type VARCHAR
+    group_id SERIAL PRIMARY KEY,
+    group_type VARCHAR
 );
 
 CREATE TABLE weekday(
-	weekday_id SERIAL PRIMARY KEY,
-	weekday_name VARCHAR
+    weekday_id SERIAL PRIMARY KEY,
+    weekday_name VARCHAR
 );
 
 CREATE TABLE weekday_groups (
-	wkd_id SERIAL PRIMARY KEY,
-	weekday_id INT,
-	group_id INT,
-	foreign key(weekday_id) references weekday(weekday_id),
-	foreign key(group_id) references groups(group_id)
+    wkd_id SERIAL PRIMARY KEY,
+    weekday_id INT,
+    group_id INT,
+    FOREIGN KEY (weekday_id) REFERENCES weekday(weekday_id) ON DELETE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
 );
 
 CREATE TABLE users (
@@ -46,7 +62,6 @@ CREATE TABLE users (
     password VARCHAR NOT NULL
 );
 
-
 CREATE TABLE user_tokens (
     token_id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
@@ -55,22 +70,21 @@ CREATE TABLE user_tokens (
     expires_at TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE students (
-	stud_id SERIAL PRIMARY KEY,
-	lead_id INT,
-	group_id INT,
-	second_name VARCHAR,
-	first_name VARCHAR,
-	patronymic VARCHAR,
-	phone VARCHAR,
-	birthdate VARCHAR,
-	hiredate VARCHAR,
-	foreign key(lead_id) references leads(lead_id),
-	foreign key(abon_id) references abonements(abon_id),
-	foreign key(group_id) references groups(group_id)
+    stud_id SERIAL PRIMARY KEY,
+    lead_id INT,
+    group_id INT,
+    second_name VARCHAR,
+    first_name VARCHAR,
+    patronymic VARCHAR,
+    phone VARCHAR,
+    birthdate VARCHAR,
+    hiredate VARCHAR,
+    FOREIGN KEY (lead_id) REFERENCES leads(lead_id) ON DELETE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
 );
 
 CREATE TABLE students_abonements (
@@ -80,8 +94,8 @@ CREATE TABLE students_abonements (
     status VARCHAR DEFAULT 'active',
     start_date DATE,
     end_date DATE,
-    FOREIGN KEY (stud_id) REFERENCES students(stud_id),
-    FOREIGN KEY (abon_id) REFERENCES abonements(abon_id)
+    FOREIGN KEY (stud_id) REFERENCES students(stud_id) ON DELETE CASCADE,
+    FOREIGN KEY (abon_id) REFERENCES abonements(abon_id) ON DELETE CASCADE
 );
 
 CREATE TABLE fix_abonements (
@@ -89,45 +103,45 @@ CREATE TABLE fix_abonements (
     stud_abon_id INTEGER NOT NULL,
     start_fix_date DATE NOT NULL,
     end_fix_date DATE,
-    FOREIGN KEY (stud_abon_id) REFERENCES students_abonements(stud_abon_id)
+    FOREIGN KEY (stud_abon_id) REFERENCES students_abonements(stud_abon_id) ON DELETE CASCADE
 );
 
 CREATE TABLE payment (
-	payment_id SERIAL PRIMARY KEY,
-	abon_id INT,
-	lead_id INT,
-	payment_date VARCHAR,
-	foreign key(abon_id) references abonements(abon_id),
-	foreign key(lead_id) references leads(lead_id)
+    payment_id SERIAL PRIMARY KEY,
+    abon_id INT,
+    lead_id INT,
+    payment_date VARCHAR,
+    FOREIGN KEY (abon_id) REFERENCES abonements(abon_id) ON DELETE CASCADE,
+    FOREIGN KEY (lead_id) REFERENCES leads(lead_id) ON DELETE CASCADE
 );
 
 CREATE TABLE event (
-	event_id SERIAL PRIMARY KEY,
-	event_type VARCHAR
+    event_id SERIAL PRIMARY KEY,
+    event_type VARCHAR
 );
 
 CREATE TABLE authorisation (
-	authorisation_id SERIAL PRIMARY KEY,
-	user_id INT,
-	event_id INT,
-	date_time DATE,
-	foreign key(user_id) references users(user_id),
-	foreign key(event_id) references event(event_id)
+    authorisation_id SERIAL PRIMARY KEY,
+    user_id INT,
+    event_id INT,
+    date_time DATE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (event_id) REFERENCES event(event_id) ON DELETE CASCADE
 );
 
 CREATE TABLE classes(
-	class_id SERIAL PRIMARY KEY,
-	stud_id INT,
-	user_id INT,
-	class_date VARCHAR,
-	class_time VARCHAR,
-	foreign key(stud_id) references students(stud_id),
-	foreign key(user_id) references users(user_id)
+    class_id SERIAL PRIMARY KEY,
+    stud_id INT,
+    user_id INT,
+    class_date VARCHAR,
+    class_time VARCHAR,
+    FOREIGN KEY (stud_id) REFERENCES students(stud_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE attendance (
-	attendance_id SERIAL PRIMARY KEY,
-	stud_id INT,
-	attendance_date VARCHAR,
-	foreign key(stud_id) references students(stud_id)
+    attendance_id SERIAL PRIMARY KEY,
+    stud_id INT,
+    attendance_date VARCHAR,
+    FOREIGN KEY (stud_id) REFERENCES students(stud_id) ON DELETE CASCADE
 );

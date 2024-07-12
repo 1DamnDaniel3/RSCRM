@@ -26,9 +26,21 @@ class UserController extends BaseController { // inherit from the base controlle
             }
             // making new token for user
             const tokensController = new UserTokensController();
-            const tokens = await tokensController.generateTokens(user.user_id);
+            const tokens = await tokensController.generateTokens(res ,user.user_id);
 
-            return res.status(200).json({ message: 'Login successful', tokens });
+            const userData ={
+                user_type: user.user_type,
+                second_name: user.second_name,
+                patronymic: user.patronymic,
+                pasport_data: user.pasport_data,
+                phone: user.phone,
+                hiredate: user.hiredate,
+                email: user.email,
+                password: user.password,
+            }
+
+            //don't sending tokens in responce to client, because we install it in the coockies in user.tokens.controller
+            return res.status(200).json({ message: 'Login successful', user: userData});
         }catch(error){
             return res.status(500).json({ message: 'Internal server error', error: error.message });
         }
@@ -43,17 +55,9 @@ class UserController extends BaseController { // inherit from the base controlle
             if (!user) {
                 return res.status(401).json({ message: 'User not found' });
             }
-    
-            // log before updating password
-            console.log(`Old password: ${user.password}`);
-            console.log(`New password: ${newPassword}`);
-    
             // !!! passwords hashing in Users model by hooks 'beforeCreate' and 'beforeUpdate'
             user.password = newPassword;
             await user.save();
-    
-            // log after updating password
-            console.log(`Updated password: ${user.password}`); 
     
             return res.status(200).json({ message: 'Password changed successfully' });
         } catch (error) {

@@ -27,7 +27,7 @@ class BaseController{
 
     async getOne(req, res){
         try{
-            const item = await this.model.findByPk()
+            const item = await this.model.findByPk(req.params.id)
             if(!item){
                 return res.status(404).json({message: 'Item not found'})
             }

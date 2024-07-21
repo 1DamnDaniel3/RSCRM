@@ -15,13 +15,15 @@ class UserTokensService{
     async writeToCoockies(res ,token, refreshToken){
         res.cookie('token', token, {
             httpOnly: true,
-            secure: true, // используйте secure: true в продакшене с HTTPS
-            maxAge: 3600000 // 1 час в миллисекундах
+            secure: process.env.NODE_ENV === 'development',// change to "production", when CRM start using
+            maxAge: 3600000, // 1 час в миллисекундах
+            sameSite: 'Lax',
         });
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: true,
-            maxAge: 604800000 // 7 дней в миллисекундах
+            maxAge: 604800000, // 7 дней в миллисекундах
+            secure: process.env.NODE_ENV === 'development',
+            sameSite: 'Lax',
         });
     }
 }

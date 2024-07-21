@@ -4,10 +4,15 @@ const { UserToken } = require('../db');
 
 const UserTokensService = require('../services/user.tokens.service')
 
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET_REFRESH = process.env.JWT_SECRET_REFRESH;
+
 class UserTokensController extends BaseController {
     constructor() {
         super(UserToken, 'token_id');
     }
+
+
 
     async generateTokens(res ,userId) {
         try {
@@ -15,8 +20,8 @@ class UserTokensController extends BaseController {
             await UserToken.destroy({ where: { user_id: userId } });
 
             // Создать новые токены
-            const token = jwt.sign({ user_id: userId }, 'your_jwt_secret', { expiresIn: '1h' });
-            const refreshToken = jwt.sign({ user_id: userId }, 'your_refresh_secret', { expiresIn: '7d' });
+            const token = jwt.sign({ user_id: userId }, JWT_SECRET, { expiresIn: '1h' });
+            const refreshToken = jwt.sign({ user_id: userId }, JWT_SECRET_REFRESH, { expiresIn: '7d' });
 
             // Записать их в базу данных
             const expiresAt = new Date(Date.now() + 3600 * 1000); // 1 час
@@ -45,15 +50,15 @@ class UserTokensController extends BaseController {
         }
 
         try {
-            const decoded = jwt.verify(refreshToken, 'your_refresh_secret');
+            const decoded = jwt.verify(refreshToken, JWT_SECRET);
             const userToken = await this.findOne({ user_id: decoded.user_id, refresh_token: refreshToken });
 
             if (!userToken) {
                 return res.status(401).json({ message: 'Invalid refresh token' });
             }
 
-            const newToken = jwt.sign({ user_id: userToken.user_id }, 'your_jwt_secret', { expiresIn: '1h' });
-            const newRefreshToken = jwt.sign({ user_id: userToken.user_id }, 'your_refresh_secret', { expiresIn: '7d' });
+            const newToken = jwt.sign({ user_id: userToken.user_id }, JWT_SECRET, { expiresIn: '1h' });
+            const newRefreshToken = jwt.sign({ user_id: userToken.user_id }, JWT_SECRET_REFRESH, { expiresIn: '7d' });
 
             await UserToken.update({
                 token: newToken,

@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+require('dotenv').config();
+
 
 const userRouter = require('./routes/user.routes');
 const leadRouter = require('./routes/lead.routes');
@@ -23,7 +26,8 @@ app.use(cors({
     credentials: true // Если вам нужно передавать куки или авторизационные данные
   }));
 
-app.use(express.json()); 
+app.use(express.json());
+app.use(cookieParser()); 
 app.use('/uploads', express.static('uploads'));
 
 app.use('/api', userRouter);

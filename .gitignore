@@ -7,4 +7,4 @@ coverage/
 dist/
 db/config/database.js
 .env
-uploads/
+uploads

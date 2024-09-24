@@ -1,6 +1,7 @@
 const {DataTypes} = require('sequelize');
 const sequelize = require('../connection')
 
+// this table for fixing abonements and write date of stop and start
 const FixAbonements = sequelize.define('FixAbonement', {
   fix_id: {
     type: DataTypes.INTEGER,

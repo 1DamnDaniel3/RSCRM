@@ -7,10 +7,9 @@ const Groups = sequelize.define('Groups', {
             primaryKey: true,
             autoIncrement: true
         },
-        group_type: {
+        group_name: {
             type: DataTypes.STRING,
-            allowNull: false
-        }
+        },
     },{
         tableName: 'groups',
         timestamps: false

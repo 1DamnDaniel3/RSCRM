@@ -2,10 +2,11 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../connection');
 
 const Weekday_groups = sequelize.define('Weekday_groups', {
-    wkdg_id: {
+    wkd_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        field: 'wkd_id',
     },
     weekday_id: {
         type: DataTypes.INTEGER,
@@ -13,7 +14,8 @@ const Weekday_groups = sequelize.define('Weekday_groups', {
         references: {
             model: 'weekday',
             key: 'weekday_id'
-        }
+        },
+        field: 'weekday_id',
     },
     group_id: {
         type: DataTypes.INTEGER,
@@ -21,7 +23,8 @@ const Weekday_groups = sequelize.define('Weekday_groups', {
         references: {
             model: 'groups',
             key: 'group_id'
-        }
+        },
+        field: 'group_id'
     }
 }, {
     tableName: 'weekday_groups',

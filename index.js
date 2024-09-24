@@ -11,6 +11,9 @@ const abonementsRouter = require('./routes/abonement.router');
 const groupRouter = require('./routes/group.router');
 const WKDgroupsRouter = require('./routes/wkd_groups.router');
 const studentsAbonementsRouter = require('./routes/stud.abon.router');
+const clientsRouter = require('./routes/client.routes');
+const paymentRouter = require('./routes/payment.routes');
+const entityGroupRouter = require('./routes/entityGrops.routes');
 
 const uploadRouter = require('./routes/other/upload.router');
 
@@ -37,6 +40,10 @@ app.use('/api', abonementsRouter);
 app.use('/api', groupRouter);
 app.use('/api', WKDgroupsRouter);
 app.use('/api', studentsAbonementsRouter);
+app.use('/api', clientsRouter);
+app.use('/api', paymentRouter);
+app.use('/api', entityGroupRouter);
+
 app.use('/api', uploadRouter);
 
 

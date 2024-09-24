@@ -1,15 +1,17 @@
 CREATE TABLE leads (
     lead_id SERIAL PRIMARY KEY,
+    group_id INT,
     first_name VARCHAR,
     second_name VARCHAR,
     phone VARCHAR,
     qualification TEXT,
     trial_date VARCHAR
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE SET NULL
 );
 
 CREATE TABLE clients (
     client_id SERIAL PRIMARY KEY,
-    lead_id INT UNIQUE NOT NULL,
+    group_id INTEGER,
     first_name VARCHAR NOT NULL,
     last_name VARCHAR,
     patronymic VARCHAR,
@@ -20,7 +22,7 @@ CREATE TABLE clients (
     emergency_contact_name VARCHAR,
     emergency_contact_phone VARCHAR,
     contacts TEXT,
-    FOREIGN KEY (lead_id) REFERENCES leads(lead_id) ON DELETE CASCADE
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE SET NULL
 );
 
 CREATE TABLE abonements (
@@ -32,13 +34,36 @@ CREATE TABLE abonements (
 
 CREATE TABLE groups (
     group_id SERIAL PRIMARY KEY,
-    group_type VARCHAR
+    group_name VARCHAR
 );
+
+-- Вставка группы по умолчанию
+INSERT INTO groups (group_name) VALUES ('Неопределённые') RETURNING group_id;
+
+CREATE TABLE entity_groups (
+    entity_group_id SERIAL PRIMARY KEY,
+    entity_type VARCHAR(50) NOT NULL,
+    group_id INTEGER NOT NULL,
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
+);
+
+INSERT INTO entity_groups (entity_type, group_id) VALUES ('clients', 1);
+INSERT INTO entity_groups (entity_type, group_id) VALUES ('students', 1);
+INSERT INTO entity_groups (entity_type, group_id) VALUES ('leads', 1);
 
 CREATE TABLE weekday(
     weekday_id SERIAL PRIMARY KEY,
     weekday_name VARCHAR
 );
+
+INSERT INTO weekday(weekday_name) VALUES
+	('Понедельник'),
+	('Вторник'),
+	('Среда'),
+	('Четверг'),
+	('Пятница'),
+	('Суббота'),
+	('Воскресенье');
 
 CREATE TABLE weekday_groups (
     wkd_id SERIAL PRIMARY KEY,
@@ -75,7 +100,7 @@ CREATE TABLE user_tokens (
 
 CREATE TABLE students (
     stud_id SERIAL PRIMARY KEY,
-    lead_id INT,
+    client_id INT,
     group_id INT,
     second_name VARCHAR,
     first_name VARCHAR,
@@ -83,7 +108,7 @@ CREATE TABLE students (
     phone VARCHAR,
     birthdate VARCHAR,
     hiredate VARCHAR,
-    FOREIGN KEY (lead_id) REFERENCES leads(lead_id) ON DELETE CASCADE,
+    FOREIGN KEY (client_id) REFERENCES clients(client_id) ON DELETE CASCADE,
     FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
 );
 
@@ -108,11 +133,11 @@ CREATE TABLE fix_abonements (
 
 CREATE TABLE payment (
     payment_id SERIAL PRIMARY KEY,
-    abon_id INT,
-    lead_id INT,
-    payment_date VARCHAR,
+    abon_id INT NOT NULL,
+    client_id INT NOT NULL,
+    payment_date DATE NOT NULL,
     FOREIGN KEY (abon_id) REFERENCES abonements(abon_id) ON DELETE CASCADE,
-    FOREIGN KEY (lead_id) REFERENCES leads(lead_id) ON DELETE CASCADE
+    FOREIGN KEY (client_id) REFERENCES clients(client_id) ON DELETE CASCADE
 );
 
 CREATE TABLE event (

@@ -14,23 +14,26 @@ const Payment = sequelize.define('Payment', {
             references: {
                 model: 'abonements',
                 key: 'abon_id'
-            }
+            },
+            allowNull: false,
         },
-        lead_id: {
+        client_id: {
             type: DataTypes.INTEGER,
             references: {
-                model: 'leads',
-                key: 'lead_id'
-            }
+                model: 'clients',
+                key: 'client_id'
+            },
+            allowNull: false,
         },
         payment_date: {
-            type: DataTypes.STRING
+            type: DataTypes.DATE,
+            allowNull: false,
         }
 
 
     }, {
         tableName: 'payment',
-        timeStaps: false
+        timestamps: false
     })
 
 module.exports = Payment;

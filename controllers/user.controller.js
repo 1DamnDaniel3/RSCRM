@@ -30,7 +30,7 @@ class UserController extends BaseController { // inherit from the base controlle
             const tokens = await tokensController.generateTokens(res ,user.user_id);
 
             //don't sending tokens in responce to client, because we sending it in the coockies in user.tokens.controller
-            return res.status(200).json({ message: 'Login successful'});
+            return res.status(200).json({ message: 'Login_successful'});
         }catch(error){
             return res.status(500).json({ message: 'Internal server error', error: error.message });
         }

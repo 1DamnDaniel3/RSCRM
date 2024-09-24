@@ -7,15 +7,13 @@ const Clients = sequelize.define('Client', {
     primaryKey: true,
     autoIncrement: true,
   },
-  lead_id: {
+  group_id:{
     type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true,
     references: {
-      model: 'leads', 
-      key: 'lead_id',
-    },
-  },
+        model: 'groups',
+        key: 'group_id'
+    }
+},
   first_name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -47,6 +45,9 @@ const Clients = sequelize.define('Client', {
     type: DataTypes.STRING,
   },
   contacts: {
+    type: DataTypes.TEXT,
+  },
+  phone:{
     type: DataTypes.TEXT,
   },
 }, {

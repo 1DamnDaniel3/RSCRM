@@ -5,7 +5,7 @@ class LeadsController extends BaseController{
     constructor(){
         super(Leads, "lead_id")
     }
-    //not null fields: first_name second_name phone qualification
+    //not null fields: first_name phone qualification
 
     // FUNCTION TO FIND ALL STUDENTS OF ONE LEAD
     async allStudentsOfLead(req, res){

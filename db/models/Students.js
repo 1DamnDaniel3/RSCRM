@@ -7,12 +7,12 @@ const Students = sequelize.define('Students', {
             primaryKey: true,
             autoIncrement: true
         },
-        lead_id: {
-            type: DataTypes.INTEGER,   //Начинаю описывать вторичные ключи для создания связей для ORM Sequelize
+        client_id: {
+            type: DataTypes.INTEGER,   
             allowNull: false,
             references: {
-                model: 'leads', //имя таблицы
-                key: 'lead_id'}
+                model: 'clients',
+                key: 'client_id'}
             },
         group_id:{
             type: DataTypes.INTEGER,

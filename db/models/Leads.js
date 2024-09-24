@@ -9,11 +9,14 @@ const Leads = sequelize.define('Leads', {
         primaryKey: true,
         autoIncrement: true
     },
-    first_name:{
-        type: DataTypes.STRING,
-        allowNull: false,
+    group_id:{
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'groups',
+            key: 'group_id'
+        }
     },
-    second_name:{
+    first_name:{
         type: DataTypes.STRING,
         allowNull: false,
     },

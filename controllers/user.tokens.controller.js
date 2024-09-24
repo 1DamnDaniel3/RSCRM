@@ -2,39 +2,38 @@ const jwt = require('jsonwebtoken');
 const BaseController = require('./base.Controller');
 const { UserToken } = require('../db');
 
+const UserTokensService = require('../services/user.tokens.service')
+
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET_REFRESH = process.env.JWT_SECRET_REFRESH;
+
 class UserTokensController extends BaseController {
     constructor() {
         super(UserToken, 'token_id');
     }
 
-    // Вспомогательный метод для создания токена без req и res
-    async createToken(data) {
-        try {
-            const item = await this.model.create(data);
-            return item;
-        } catch (error) {
-            console.error('Error creating token:', error.message);
-            throw new Error('Error creating token');
-        }
-    }
 
-    async generateTokens(userId) {
+
+    async generateTokens(res ,userId) {
         try {
             // Удалить старые токены
             await UserToken.destroy({ where: { user_id: userId } });
 
             // Создать новые токены
-            const token = jwt.sign({ user_id: userId }, 'your_jwt_secret', { expiresIn: '1h' });
-            const refreshToken = jwt.sign({ user_id: userId }, 'your_refresh_secret', { expiresIn: '7d' });
+            const token = jwt.sign({ user_id: userId }, JWT_SECRET, { expiresIn: '1h' });
+            const refreshToken = jwt.sign({ user_id: userId }, JWT_SECRET_REFRESH, { expiresIn: '7d' });
 
             // Записать их в базу данных
             const expiresAt = new Date(Date.now() + 3600 * 1000); // 1 час
-            await this.createToken({
+            await UserTokensService.createToken({
                 user_id: userId,
                 token,
                 refresh_token: refreshToken,
                 expires_at: expiresAt,
             });
+
+            // Установить токены в куки
+            UserTokensService.writeToCoockies(res, token, refreshToken)
 
             return { token, refreshToken };
         } catch (error) {
@@ -51,15 +50,15 @@ class UserTokensController extends BaseController {
         }
 
         try {
-            const decoded = jwt.verify(refreshToken, 'your_refresh_secret');
+            const decoded = jwt.verify(refreshToken, JWT_SECRET);
             const userToken = await this.findOne({ user_id: decoded.user_id, refresh_token: refreshToken });
 
             if (!userToken) {
                 return res.status(401).json({ message: 'Invalid refresh token' });
             }
 
-            const newToken = jwt.sign({ user_id: userToken.user_id }, 'your_jwt_secret', { expiresIn: '1h' });
-            const newRefreshToken = jwt.sign({ user_id: userToken.user_id }, 'your_refresh_secret', { expiresIn: '7d' });
+            const newToken = jwt.sign({ user_id: userToken.user_id }, JWT_SECRET, { expiresIn: '1h' });
+            const newRefreshToken = jwt.sign({ user_id: userToken.user_id }, JWT_SECRET_REFRESH, { expiresIn: '7d' });
 
             await UserToken.update({
                 token: newToken,
@@ -68,6 +67,10 @@ class UserTokensController extends BaseController {
             }, {
                 where: { token_id: userToken.token_id },
             });
+
+
+            // new tokens to coockies
+            UserTokensService.writeToCoockies(res, newToken, newRefreshToken)
 
             return res.status(200).json({ token: newToken, refreshToken: newRefreshToken });
         } catch (error) {

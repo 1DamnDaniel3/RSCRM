@@ -1,4 +1,7 @@
 //БАЗОВЫЙ КОНТРОЛЛЕР ПОЗВОЛЯЕТ ВЫПОЛНЯТЬ CRUD ЦИКЛ ДЛЯ ВСЕХ МОДЕЛЕЙ ПУТЁМ ИСПОЛЬЗОВАНИЯ 
+
+const { where } = require("sequelize")
+
 //ЕГО КОНСТРУКТОРА В КОНТРОЛЛЕРАХ МОДЕЛЕЙ
 class BaseController{
     constructor(model, modelIdName) {
@@ -25,9 +28,19 @@ class BaseController{
         }
     }
 
+    // async getGroupOf(req, res){
+    //     try{
+    //         const items = await this.model.findAll({
+    //             where: req.body
+    //         })
+    //     }catch(error){
+    //         res.status(500).json({message: error.message})
+    //     }
+    // }
+
     async getOne(req, res){
         try{
-            const item = await this.model.findByPk()
+            const item = await this.model.findByPk(req.params.id)
             if(!item){
                 return res.status(404).json({message: 'Item not found'})
             }
